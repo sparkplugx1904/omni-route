@@ -47,17 +47,27 @@ jobs:
           emcmake cmake -S template/wasm -B template/wasm/build-ci -DCMAKE_BUILD_TYPE=Release
           cmake --build template/wasm/build-ci --parallel
           ls -la template/wasm/route_planner_wasm.js template/wasm/route_planner_wasm.wasm
+          mkdir -p public/wasm
+          cp template/wasm/route_planner_wasm.js template/wasm/route_planner_wasm.wasm public/wasm/
 
-      # POST_BUILD di template/wasm/CMakeLists.txt otomatis menyalin artefak
-      # hasil build ke template/wasm/, sehingga yang di-upload sudah segar.
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies & Build with Vite
+        run: |
+          npm ci
+          npm run build
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'template'
-
+          path: 'dist'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
