@@ -49,10 +49,10 @@ Untuk mengubah kode C++ di web app — butuh [Emscripten SDK](https://emscripten
 ```bash
 # Windows                            # Linux/macOS
 set EMSDK=C:\emsdk                   export EMSDK=~/emsdk
-wasm\build_wasm.bat                  wasm/build_wasm.sh
+build.bat wasm                       build.sh wasm
 ```
 
-Skrip meng-compile `wasm/wasm_main.cpp` + core bersama (`src/`, `include/`, `third_party/`) dan menyalin artifact ke `public/wasm/`.
+CMake mendeteksi toolchain Emscripten secara otomatis ( satu `CMakeLists.txt` untuk dua target) dan menyalin artifact ke `public/wasm/`.
 
 ### Lapisan caching
 
@@ -130,19 +130,13 @@ route-planner/
 │   ├── wasm/                # Artifact hasil build (route_planner_wasm.js/.wasm)
 │   ├── manifest.json        # PWA manifest
 │   └── sw.js                # Service worker (cache-first app shell)
-├── wasm/                    # Build Emscripten
-│   ├── CMakeLists.txt       # Toolchain + flag + copy artifact → public/wasm/
-│   ├── wasm_main.cpp        # C-ABI WASM (parse_csv, haversine_matrix_fill, compute_routes_wasm)
-│   └── build_wasm.bat/.sh   # Skrip build lokal (emsdk)
-├── src/                     # Core C++ (dipakai native & WASM) + main.cpp (CLI)
-├── include/                 # Header C++ (types, utils, csv_parser, osrm_client,
-│                            # tsp_solver, clustering, engine, map_builder)
-├── third_party/             # Header-only: cxxopts, nlohmann/json, cpp-httplib
+├── src/                     # Seluruh C++
+│   ├── *.hpp                # Header (interface core)
+│   ├── *.cpp                # Implementasi core + main.cpp (CLI) + wasm_main.cpp (C-ABI)
+│   └── third_party/         # Header-only: cxxopts, nlohmann/json, cpp-httplib
 ├── samples/                 # Dataset contoh/uji (CSV, area Bali)
-├── docs/                    # Dokumen perencanaan (historis)
-├── legacy-python/           # Versi Python pendahulu (v5, v6) — hanya referensi
-├── CMakeLists.txt           # Build CLI native
-├── build.sh / build.bat     # Skrip build CLI
+├── CMakeLists.txt           # Dua target: CLI native (default) / WASM (deteksi Emscripten)
+├── build.sh / build.bat     # `build.bat` = CLI native · `build.bat wasm` = build web
 ├── package.json             # Vite + Wrangler (web app)
 └── .github/workflows/static.yml   # CI: build WASM + deploy GitHub Pages
 ```
@@ -201,4 +195,4 @@ MIT License — lihat [LICENSE](LICENSE).
 - **Leaflet.js** — peta interaktif
 - **cxxopts, nlohmann/json, cpp-httplib** — library header-only
 - **Emscripten** — C++ → WebAssembly
-- Versi Python pendahulu — lihat `legacy-python/`
+- Versi Python pendahulu (v5, v6) — tersimpan di riwayat git (commit a68d4b0)

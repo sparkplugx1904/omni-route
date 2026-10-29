@@ -44,11 +44,11 @@ jobs:
       - name: Build WASM from C++ sources
         run: |
           emcc --version
-          emcmake cmake -S wasm -B wasm/build-ci -DCMAKE_BUILD_TYPE=Release
-          cmake --build wasm/build-ci --parallel
-          # POST_BUILD in wasm/CMakeLists.txt already copies the artifacts into
-          # public/wasm/; copy from the build dir as a safety net.
-          cp wasm/build-ci/route_planner_wasm.js wasm/build-ci/route_planner_wasm.wasm public/wasm/
+          emcmake cmake -S . -B .build-wasm-ci -DCMAKE_BUILD_TYPE=Release
+          cmake --build .build-wasm-ci --parallel
+          # The WASM target in CMakeLists.txt copies artifacts into public/wasm/;
+          # copy from the build dir as a safety net.
+          cp .build-wasm-ci/route_planner_wasm.js .build-wasm-ci/route_planner_wasm.wasm public/wasm/
           ls -la public/wasm/route_planner_wasm.js public/wasm/route_planner_wasm.wasm
 
       - name: Setup Node.js
