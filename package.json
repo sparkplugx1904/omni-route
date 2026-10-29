@@ -1,5 +1,5 @@
 {
-  "name": "multiroute",
+  "name": "omni-route",
   "version": "1.0.0",
   "description": "Route Planner - Fair Workload Balancing Console",
   "type": "module",
@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "deploy": "vite build && wrangler pages deploy dist --project-name=multiroute --commit-dirty=true",
+    "deploy": "vite build && wrangler pages deploy dist --project-name=omni-route --commit-dirty=true",
     "pages:dev": "vite build && wrangler pages dev dist"
   },
   "devDependencies": {
