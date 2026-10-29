@@ -27,4 +27,4 @@ cmake .. -DCMAKE_BUILD_TYPE=Release \
 echo "[2/2] Building WASM module..."
 cmake --build . --config Release
 
-echo "Complete! Artifacts: route_planner_wasm.js / route_planner_wasm.wasm"
+echo "Complete! Artifacts copied to public/wasm/ — run 'npm run dev' to try."

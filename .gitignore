@@ -1,6 +1,7 @@
 # Build artifacts
 build/
 build-em/
+wasm/build-ci/
 *.obj
 *.o
 *.exe

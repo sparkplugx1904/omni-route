@@ -53,9 +53,9 @@ if errorlevel 1 (
 
 echo.
 echo Complete! Artifacts:
-echo   %THIS%route_planner_wasm.js
-echo   %THIS%route_planner_wasm.wasm
+echo   %THIS%..\public\wasm\route_planner_wasm.js
+echo   %THIS%..\public\wasm\route_planner_wasm.wasm
 echo.
-echo Serve the template/ folder over HTTP to use the app.
+echo Artifacts copied to public/wasm/ - run "npm run dev" to try.
 
 endlocal
